@@ -9,7 +9,7 @@
         
     } catch (error) {
         console.error("MONGO DB CONNECTION ERROR: ", error)
-        throw error
+        process.exit(1)
     }
  }
  
