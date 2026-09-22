@@ -17,6 +17,10 @@ app.use(express.urlencoded({extended : true, limit : "15kb"})) // accept the dat
 
 app.use(express.static("public"))
 
+// Routes import
+import userRouter from "./routes/user.routes.js";
+
+app.use("/api/v1/users", userRouter); // url formed will be : "localhost:5000/api/v1/users/...{ all routes from userRouter }"
 
 
 
