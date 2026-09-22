@@ -1,7 +1,7 @@
 import { ApiErrors } from "../utils/ApiErrors.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
-import uploadCloudinary from "../utils/cloudinary.js"
+import {uploadCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const registerUser = asyncHandler( async (req, res) => {
@@ -20,6 +20,8 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new ApiErrors(400, "All fields are required")
     }
 
+    console.log("reached : All text data fields are correctly fed");
+
     //Validate the data email, username etc
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
@@ -30,8 +32,10 @@ const registerUser = asyncHandler( async (req, res) => {
         console.log("Email is valid! Proceeding...");
     }
 
+    console.log("reached : Email validation done");
+
     //Check is user already exists
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or : [{username}, {email}]
     })
 
@@ -39,9 +43,18 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new ApiErrors(409, "Username / Email already exists !");
     }
 
+    console.log("reached : Check is user already exists done");
+
     // Handling uploaded media
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+     let coverImageLocalPath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path
+    }
+
+     console.log("reached : got files upload local path");
 
     if(!avatarLocalPath){
          throw new ApiErrors(400, "Avatar file is required! ");
@@ -49,15 +62,17 @@ const registerUser = asyncHandler( async (req, res) => {
 
     // Upload image on cloudinary
     const avatar =await uploadCloudinary(avatarLocalPath);
-    const coverImage = "";
+    let coverImage = "";
     if(coverImageLocalPath){
         coverImage =await uploadCloudinary(coverImageLocalPath);
     }
 
+     console.log("reached : got files upload to cloudinary");
+
     if(! avatar){
         throw new ApiErrors(400, "Avatar file is required! ");
     }
-
+   console.log("reached : got cloudinary paths for images");
     // Store all data in DB
     const user = await User.create({
         fullname,
@@ -68,6 +83,7 @@ const registerUser = asyncHandler( async (req, res) => {
         username: username.toLowerCase()
     });
 
+     console.log("reached : successfully stored in DB");
     const CreatedUser = await User.findOne(user._id).select(
         "-password -refreshToken"
     );
@@ -78,6 +94,8 @@ const registerUser = asyncHandler( async (req, res) => {
     return res.status(201).json(
         new ApiResponse(200, CreatedUser, "User registered successfully!")
     );
+    console.log("reached : End ");
+    
 })
 
 export { registerUser }

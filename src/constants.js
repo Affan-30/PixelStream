@@ -1,1 +1,1 @@
-export const DB_NAME = "pixelstream"
+// export const DB_NAME="pixelstream"
