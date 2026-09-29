@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { v2 as cloudinary } from "cloudinary";
+import mongoose from "mongoose";
 
 const generateAccessAndRefereshTokens = async (userId) => {
     try {
