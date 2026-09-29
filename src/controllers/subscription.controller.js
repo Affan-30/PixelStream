@@ -1,7 +1,7 @@
 import mongoose, { isValidObjectId } from "mongoose";
-import asyncHandler from "../utils/asyncHandler.js";
-import ApiError from "../utils/ApiErrors.js";
-import ApiResponse from "../utils/ApiResponse.js";
+import {asyncHandler} from "../utils/asyncHandler.js";
+import {ApiErrors as ApiError} from "../utils/ApiErrors.js";
+import {ApiResponse} from "../utils/ApiResponse.js";
 import { Subscription } from "../models/subscription.model.js";
 
 const toggleSubscription = asyncHandler(async (req, res) => {
@@ -109,7 +109,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
                 subscriber: {
                     _id: 1,
                     username: 1,
-                    fullName: 1,
+                    fullname: 1,
                     "avatar.url": 1,
                     subscribedToSubscriber: 1,
                     subscribersCount: 1,
@@ -173,7 +173,7 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
                 subscribedChannel: {
                     _id: 1,
                     username: 1,
-                    fullName: 1,
+                    fullname: 1,
                     "avatar.url": 1,
                     latestVideo: {
                         _id: 1,

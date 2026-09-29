@@ -1,6 +1,6 @@
-import asyncHandler from "../utils/asyncHandler.js";
+import {asyncHandler} from "../utils/asyncHandler.js";
 import { Tweet } from "../models/tweet.model.js";
-import ApiResponse from "../utils/ApiResponse.js";
+import {ApiResponse} from "../utils/ApiResponse.js";
 import mongoose, { isValidObjectId } from "mongoose";
 import { User } from "../models/user.model.js";
 
