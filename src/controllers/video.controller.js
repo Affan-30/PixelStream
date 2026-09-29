@@ -116,8 +116,8 @@ const publishAVideo = asyncHandler(async (req, res) => {
         throw new ApiError(400, "thumbnailLocalPath is required");
     }
 
-    const videoFile = await uploadOnCloudinary(videoFileLocalPath);
-    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+    const videoFile = await uploadCloudinary(videoFileLocalPath);
+    const thumbnail = await uploadCloudinary(thumbnailLocalPath);
 
     if (!videoFile) {
         throw new ApiError(400, "Video file not found");
@@ -320,7 +320,7 @@ const updateVideo = asyncHandler(async (req, res) => {
         throw new ApiError(400, "thumbnail is required");
     }
 
-    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+    const thumbnail = await uploadCloudinary(thumbnailLocalPath);
 
     if (!thumbnail) {
         throw new ApiError(400, "thumbnail not found");
