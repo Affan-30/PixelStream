@@ -7,7 +7,8 @@ import {
     getVideoById,
     updateVideo,
     publishAVideo,
-    togglePublishStatus
+    togglePublishStatus,
+    askQuestionAboutVideo
 } from "../controllers/video.controller.js";
 
 const router = Router();
@@ -39,5 +40,9 @@ router
     .patch(verifyJWT, upload.single("thumbnail"), updateVideo);
 
 router.route("/toggle/publish/:videoId").patch(verifyJWT, togglePublishStatus);
+
+router
+    .route("/:videoId/ask")
+    .post(verifyJWT, askQuestionAboutVideo);
 
 export default router;
